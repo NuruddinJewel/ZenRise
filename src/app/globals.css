@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: crowdfundingDark --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "crowdfundingDark";
+  default: true;
+  color-scheme: dark;
+
+  --color-base-100: #0B0F2E;
+  --color-base-200: #141B3C;
+  --color-base-300: #1C1440;
+  --color-base-content: #F4F4FA;
+
+  --color-primary: #5CFFE0;
+  --color-primary-content: #06231C;
+
+  --color-secondary: #FF7BD6;
+  --color-secondary-content: #2E0B22;
+
+  --color-accent: #FFD35C;
+  --color-accent-content: #3D2900;
+
+  --color-neutral: #1C1440;
+  --color-neutral-content: #B9BEDC;
+
+  --color-info: #6FB8FF;
+  --color-info-content: #05203D;
+
+  --color-success: #2FD3A0;
+  --color-success-content: #052E22;
+
+  --color-warning: #FFA523;
+  --color-warning-content: #3D2600;
+
+  --color-error: #FF5C7A;
+  --color-error-content: #3D0413;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.25rem;
+
+  --border: 1px;
+}
+
