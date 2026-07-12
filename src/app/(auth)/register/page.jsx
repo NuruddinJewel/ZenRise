@@ -61,7 +61,7 @@ export default function RegisterPage() {
                             name="name"
                             value={form.name}
                             onChange={handleChange}
-                            placeholder="Rakib Hasan"
+                            placeholder="Your Name"
                             className="input input-bordered w-full"
                             required
                         />
