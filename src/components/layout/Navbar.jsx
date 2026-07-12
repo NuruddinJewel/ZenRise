@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Menu, X, ChevronDown, LogOut, LayoutDashboard } from "lucide-react";
+import { toast } from "react-toastify";
 
 const NAV_LINKS = {
     supporter: [
@@ -40,6 +41,7 @@ export default function Navbar() {
 
     async function handleLogout() {
         await authClient.signOut();
+        toast.success("Logged out successfully!");
         router.push("/");
         router.refresh();
     }
