@@ -81,7 +81,7 @@ export default function CreatorWithdrawalsPage() {
                     </h1>
                     <p className="mt-1 text-sm text-base-content/60">Manage your payout requests securely.</p>
                 </div>
-                <button onClick={() => setIsModalOpen(true)} className="btn btn-primary rounded-xl normal-case gap-2 text-white">
+                <button onClick={() => setIsModalOpen(true)} className="btn btn-primary rounded-xl normal-case gap-2 text-black">
                     <Plus size={18} /> Withdraw Funds
                 </button>
             </div>

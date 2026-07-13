@@ -9,6 +9,7 @@ import {
     Wallet,
     Receipt,
     Loader2,
+    Flag,
 } from "lucide-react";
 
 const STATUS_STYLES = {
@@ -150,6 +151,19 @@ export default function CreatorDashboardHome() {
                     <div>
                         <p className="font-medium text-base-content">Payment History</p>
                         <p className="text-xs text-neutral-content">Track all transactions</p>
+                    </div>
+                </Link>
+                {/* Report */}
+                <Link
+                    href="/dashboard/creator/report-issue"
+                    className="flex items-center gap-3 rounded-2xl border border-base-300 bg-base-200 p-5 transition-colors hover:border-primary"
+                >
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-error/10 text-error">
+                        <Flag size={20} />
+                    </span>
+                    <div>
+                        <p className="font-medium text-base-content">Report an Issue</p>
+                        <p className="text-xs text-neutral-content">Get help from admin</p>
                     </div>
                 </Link>
             </div>
