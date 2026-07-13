@@ -1,3 +1,4 @@
+import ExploreByCategory from "@/components/home/ExploreByCategory";
 import HeroBanner from "@/components/home/HeroBanner";
 import HowItWorks from "@/components/home/HowItWorks";
 import Testimonials from "@/components/home/Testimonials";
@@ -34,6 +35,7 @@ export default function Home() {
           <HeroBanner />
         </div>
       </section>
+      <ExploreByCategory />
       <HowItWorks />
       <Testimonials />
     </main>
