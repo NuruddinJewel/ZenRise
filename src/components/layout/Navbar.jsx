@@ -13,7 +13,7 @@ const NAV_LINKS = {
         { href: "/explore", label: "Explore Campaigns" },
         { href: "/dashboard/supporter/contributions", label: "My Contributions" },
         { href: "/dashboard/supporter/purchase-credit", label: "Purchase Credit" },
-        { href: "/dashboard/supporter/payment-history", label: "Payment History" },
+        { href: "/dashboard/supporter/payments", label: "Payment History" },
     ],
     creator: [
         { href: "/dashboard/creator", label: "Home" },
