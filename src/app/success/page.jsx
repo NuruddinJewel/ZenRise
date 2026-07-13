@@ -9,7 +9,7 @@ export default function SuccessPage() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
 
-    const [status, setStatus] = useState("verifying"); // verifying | success | error
+    const [status, setStatus] = useState("verifying");
     const [credits, setCredits] = useState(0);
     const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -51,14 +51,10 @@ export default function SuccessPage() {
 
     return (
         <main className="flex flex-1 flex-col items-center justify-center min-h-[75vh] px-6 py-12 text-center bg-base-100">
-            {/* মডার্ন থিম কার্ড কন্টেইনার */}
             <div className="w-full max-w-md p-8 rounded-box bg-base-200 border border-base-300 shadow-xl backdrop-blur-sm">
-
-                {/* ১. ভেরিফাইং স্টেট (নিয়ন সায়ান গ্লো স্পিনার) */}
                 {status === "verifying" && (
                     <div className="flex flex-col items-center py-6">
                         <div className="relative flex items-center justify-center">
-                            {/* ব্যাকগ্রাউন্ড গ্লো ইফেক্ট */}
                             <div className="absolute w-16 h-16 rounded-full bg-primary/20 blur-xl animate-pulse"></div>
                             <span className="loading loading-spinner loading-lg text-primary relative z-10" />
                         </div>
@@ -69,7 +65,6 @@ export default function SuccessPage() {
                     </div>
                 )}
 
-                {/* ২. সাকসেস স্টেট */}
                 {status === "success" && (
                     <div className="flex flex-col items-center">
                         <div className="p-3 rounded-full bg-success/10 text-success border border-success/20">
@@ -99,7 +94,6 @@ export default function SuccessPage() {
                     </div>
                 )}
 
-                {/* ৩. এরর স্টেট */}
                 {status === "error" && (
                     <div className="flex flex-col items-center">
                         <div className="p-3 rounded-full bg-error/10 text-error border border-error/20">
