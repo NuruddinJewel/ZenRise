@@ -31,6 +31,11 @@ export const auth = betterAuth({
                 defaultValue: "supporter",
                 input: true,
             },
+            credits: {
+                type: "number",
+                defaultValue: 0,
+                input: false,
+            },
         },
     },
 });

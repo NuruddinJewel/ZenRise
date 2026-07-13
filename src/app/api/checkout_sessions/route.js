@@ -1,32 +1,56 @@
-import { NextResponse } from 'next/server'
-import { headers } from 'next/headers'
+import { NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-import { stripe } from '../../../lib/stripe'
+const CREDIT_PACKAGES = {
+    small: { credits: 100, priceUsd: 10 },
+    medium: { credits: 500, priceUsd: 50 },
+    large: { credits: 1000, priceUsd: 100 },
+};
 
-export async function POST() {
+export async function POST(req) {
     try {
-        const headersList = await headers()
-        const origin = headersList.get('origin')
+        const session = await auth.api.getSession({ headers: await headers() });
 
-        // Create Checkout Sessions from body params.
-        const session = await stripe.checkout.sessions.create({
+        if (!session) {
+            return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+        }
+
+        const { packageId } = await req.json();
+        const pkg = CREDIT_PACKAGES[packageId];
+
+        if (!pkg) {
+            return NextResponse.json({ message: "Invalid package" }, { status: 400 });
+        }
+
+        const checkoutSession = await stripe.checkout.sessions.create({
+            mode: "payment",
+            payment_method_types: ["card"],
             line_items: [
                 {
-                    // Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                    // price: '{{PRICE_ID}}',
-
-                    price: 'price_1TqRgzPAc6Z3a54aRSyPlMX',
+                    price_data: {
+                        currency: "usd",
+                        product_data: {
+                            name: `${pkg.credits} Credits`,
+                            description: "FundRise platform credits",
+                        },
+                        unit_amount: pkg.priceUsd * 100,
+                    },
                     quantity: 1,
                 },
             ],
-            mode: 'subscription',
-            success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+            metadata: {
+                userId: session.user.id,
+                credits: pkg.credits.toString(),
+            },
+            success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/supporter/purchase-credit`,
         });
-        return NextResponse.redirect(session.url, 303)
+
+        return NextResponse.json({ url: checkoutSession.url });
     } catch (err) {
-        return NextResponse.json(
-            { error: err.message },
-            { status: err.statusCode || 500 }
-        )
+        console.error("Checkout session error:", err);
+        return NextResponse.json({ message: "Failed to create session" }, { status: 500 });
     }
 }
