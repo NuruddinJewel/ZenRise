@@ -56,10 +56,9 @@ function ExploreContent() {
             //     setIsLoading(false);
             // }
             try {
-                // 🎯 ফিক্স: new URL বাদ দিয়ে সরাসরি স্ট্রেইট-ফরওয়ার্ড স্ট্রিং তৈরি করুন
+
                 let fetchUrl = `/api/campaigns?status=approved`;
 
-                // ক্যাটাগরি ফিল্টার থাকলে সেটা পেছনে জোড়া লাগিয়ে দিন
                 if (categoryFilter) {
                     fetchUrl += `&category=${encodeURIComponent(categoryFilter)}`;
                 }
