@@ -13,8 +13,10 @@ export default function ManageCampaignsPage() {
     async function fetchPendingCampaigns() {
         try {
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns?status=pending`,
-                { credentials: "include" }
+                // `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns?status=pending`,
+                `/api/campaigns?status=pending`,
+                // { credentials: "include" }
+
             );
             const data = await res.json();
             setCampaigns(data);
@@ -34,10 +36,11 @@ export default function ManageCampaignsPage() {
         setActionLoadingId(id);
         try {
             const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${id}/status`,
+                // `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${id}/status`,
+                `/api/campaigns/${id}/status`,
                 {
                     method: "PATCH",
-                    credentials: "include",
+                    // credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ status }),
                 }

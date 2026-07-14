@@ -20,7 +20,7 @@ const STATUS_STYLES = {
 
 export default function CreatorDashboardHome() {
     const { data: session, isPending: sessionPending } = authClient.useSession();
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -31,8 +31,8 @@ export default function CreatorDashboardHome() {
         async function fetchCampaigns() {
             try {
                 const res = await fetch(
-                    `${backendUrl}/api/campaigns?creatorId=${session.user.id}`,
-                    { credentials: "include" }
+                    `/api/campaigns?creatorId=${session.user.id}`,
+                    // { credentials: "include" }
                 );
                 const data = await res.json();
                 setCampaigns(data);
@@ -44,7 +44,8 @@ export default function CreatorDashboardHome() {
         }
 
         fetchCampaigns();
-    }, [sessionPending, session, backendUrl]);
+        // }, [sessionPending, session, backendUrl]);
+    }, [sessionPending, session]);
 
     if (sessionPending || loading) {
         return (

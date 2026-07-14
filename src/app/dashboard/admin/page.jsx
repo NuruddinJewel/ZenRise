@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Users, FolderKanban, Wallet, Flag, Loader2 } from "lucide-react";
 
 export default function AdminDashboardHome() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     const [stats, setStats] = useState({ users: 0, pendingCampaigns: 0, pendingWithdrawals: 0, pendingReports: 0 });
     const [loading, setLoading] = useState(true);
 
@@ -13,10 +13,11 @@ export default function AdminDashboardHome() {
         async function fetchStats() {
             try {
                 const [usersRes, campaignsRes, withdrawalsRes, reportsRes] = await Promise.all([
-                    fetch(`${backendUrl}/api/users`, { credentials: "include" }),
-                    fetch(`${backendUrl}/api/campaigns?status=pending`),
-                    fetch(`${backendUrl}/api/withdrawals?status=pending`, { credentials: "include" }),
-                    fetch(`${backendUrl}/api/reports?status=pending`, { credentials: "include" }),
+                    // fetch(`${backendUrl}/api/users`, { credentials: "include" }),
+                    fetch(`/api/users`),
+                    fetch(`/api/campaigns?status=pending`),
+                    fetch(`/api/withdrawals?status=pending`,),
+                    fetch(`/api/reports?status=pending`,),
                 ]);
 
                 const users = await usersRes.json();
@@ -38,7 +39,8 @@ export default function AdminDashboardHome() {
         }
 
         fetchStats();
-    }, [backendUrl]);
+        // }, [backendUrl]);
+    },);
 
     if (loading) {
         return (

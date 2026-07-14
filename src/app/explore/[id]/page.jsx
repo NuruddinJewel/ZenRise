@@ -195,23 +195,24 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Tag, Users } from "lucide-react";
-import { authClient } from "@/lib/auth-client"; // Better-Auth ক্লায়েন্ট ইমপোর্ট
-import ContributeModal from "@/components/campaign/ContributeModal"; // নতুন মডাল কম্পোনেন্ট
+import { authClient } from "@/lib/auth-client";
+import ContributeModal from "@/components/campaign/ContributeModal";
 
 export default function CampaignDetailsPage() {
     const { id } = useParams();
     const router = useRouter();
-    const { data: session } = authClient.useSession(); // ইউজারের সেশন ও ওয়ালেট ক্রেডিট ডাটা রিড করা
+    const { data: session } = authClient.useSession();
 
     const [campaign, setCampaign] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); // মডাল ওপেন/ক্লোজ স্টেট
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         async function fetchCampaign() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${id}`);
+                // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campaigns/${id}`);
+                const res = await fetch(`/api/campaigns/${id}`);
                 if (!res.ok) throw new Error("Campaign not found");
                 const data = await res.json();
                 setCampaign(data);
@@ -226,7 +227,7 @@ export default function CampaignDetailsPage() {
         fetchCampaign();
     }, [id]);
 
-    // কন্ট্রিবিউট বাটনে ক্লিক করলে যা হবে
+
     function handleContribute() {
         setIsModalOpen(true);
     }
@@ -365,7 +366,6 @@ export default function CampaignDetailsPage() {
                         {Math.round((campaign.raisedCredits || 0) / 20) || 0} supporters (est.)
                     </div>
 
-                    {/* সেশন চেক করে বাটন রেন্ডার করা */}
                     {session?.user ? (
                         <button
                             onClick={handleContribute}
@@ -375,7 +375,7 @@ export default function CampaignDetailsPage() {
                         </button>
                     ) : (
                         <Link
-                            href="/login" // আপনার প্রোজেক্টের লগইন পাথ অনুযায়ী বদলে নিতে পারেন
+                            href="/login"
                             className="btn btn-outline border-base-300 mt-6 w-full rounded-full"
                         >
                             Login to Contribute
@@ -388,7 +388,6 @@ export default function CampaignDetailsPage() {
                 </div>
             </div>
 
-            {/* কন্ট্রিবিউট পপআপ মডাল কন্টেইনার */}
             <ContributeModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -396,7 +395,6 @@ export default function CampaignDetailsPage() {
                 supporterId={session?.user?.id || session?.user?._id}
                 currentCredits={session?.user?.credits || 0}
                 onSuccess={() => {
-                    // সাকসেসফুল ট্রানজ্যাকশন শেষে হার্ড রিফ্রেশ
                     window.location.reload();
                 }}
             />

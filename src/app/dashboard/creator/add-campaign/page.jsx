@@ -23,7 +23,8 @@ export default function AddCampaignPage() {
     useEffect(() => {
         async function fetchCategories() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`);
+                // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`);
+                const res = await fetch(`/api/categories`);
                 const data = await res.json();
                 setCategories(data);
             } catch (err) {
@@ -56,9 +57,10 @@ export default function AddCampaignPage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campaigns`, {
+            // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campaigns`, {
+            const res = await fetch(`/api/campaigns`, {
                 method: "POST",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
             });

@@ -24,8 +24,9 @@ export default function MyCampaignsPage() {
         async function fetchMyCampaigns() {
             try {
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns?creatorId=${session.user.id}`,
-                    { credentials: "include" }
+                    // `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns?creatorId=${session.user.id}`,
+                    `/api/campaigns?creatorId=${session.user.id}`,
+                    // { credentials: "include" }
                 );
                 if (!res.ok) throw new Error("Failed to fetch");
                 const data = await res.json();

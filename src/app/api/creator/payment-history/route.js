@@ -13,7 +13,7 @@ export async function GET() {
 
         const creatorId = session.user.id;
 
-        // Creator-এর সব campaign (id সহ)
+        // Creator-All campaign (id)
         const campaigns = await db
             .collection("campaigns")
             .find({ creatorId })
@@ -22,13 +22,13 @@ export async function GET() {
         const campaignIds = campaigns.map((c) => c._id.toString());
         const campaignMap = Object.fromEntries(campaigns.map((c) => [c._id.toString(), c.title]));
 
-        // এই campaign গুলোতে আসা সব contribution
+        // Campaign Contribution
         const contributions = await db
             .collection("contributions")
             .find({ campaignId: { $in: campaignIds } })
             .toArray();
 
-        // Creator-এর সব withdrawal request
+        // Creator (Withdrawal Requests)
         const withdrawals = await db
             .collection("withdrawals")
             .find({ creatorId })

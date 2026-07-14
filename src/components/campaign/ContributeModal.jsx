@@ -27,7 +27,7 @@ export default function ContributeModal({ isOpen, onClose, campaignId, supporter
         setIsLoading(true);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000"}/api/contributions`, {
+            const res = await fetch(`/api/contributions`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,6 +36,7 @@ export default function ContributeModal({ isOpen, onClose, campaignId, supporter
                     campaignId,
                     supporterId,
                     amount: creditAmount,
+                    // amount: amount,
                 }),
             });
 
@@ -45,7 +46,10 @@ export default function ContributeModal({ isOpen, onClose, campaignId, supporter
 
             toast.success(`Successfully contributed ${creditAmount} credits!`);
             onSuccess();
-            onClose();
+            // onClose();
+            setTimeout(() => {
+                onClose();
+            }, 1000);
         } catch (err) {
             console.error(err);
             toast.error(err instanceof Error ? err.message : "Contribution failed.");

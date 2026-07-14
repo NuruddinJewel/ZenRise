@@ -7,14 +7,15 @@ import { Users, Loader2 } from "lucide-react";
 const ROLES = ["supporter", "creator", "admin"];
 
 export default function ManageUsersPage() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updatingId, setUpdatingId] = useState(null);
 
     async function fetchUsers() {
         try {
-            const res = await fetch(`${backendUrl}/api/users`, { credentials: "include" });
+            // const res = await fetch(`${backendUrl}/api/users`, { credentials: "include" });
+            const res = await fetch(`/api/users`,);
             const data = await res.json();
             if (data.success) setUsers(data.data);
         } catch (err) {
@@ -32,9 +33,9 @@ export default function ManageUsersPage() {
     async function handleRoleChange(id, newRole) {
         setUpdatingId(id);
         try {
-            const res = await fetch(`${backendUrl}/api/users/${id}/role`, {
+            const res = await fetch(`/api/users/${id}/role`, {
                 method: "PATCH",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ role: newRole }),
             });

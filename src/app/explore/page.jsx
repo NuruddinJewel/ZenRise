@@ -19,7 +19,8 @@ function ExploreContent() {
         async function fetchCategories() {
             try {
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/categories`
+                    // `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/categories`
+                    `/api/categories`
                 );
                 const data = await res.json();
                 setCategories(data);
@@ -33,14 +34,37 @@ function ExploreContent() {
     useEffect(() => {
         async function fetchCampaigns() {
             setIsLoading(true);
-            try {
-                const url = new URL(
-                    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/campaigns`
-                );
-                url.searchParams.set("status", "approved");
-                if (categoryFilter) url.searchParams.set("category", categoryFilter);
+            // try {
+            //     const url = new URL(
+            //         // `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/campaigns`
+            //         `/api/campaigns`
+            //     );
+            //     url.searchParams.set("status", "approved");
+            //     if (categoryFilter) url.searchParams.set("category", categoryFilter);
 
-                const res = await fetch(url.toString());
+            //     const res = await fetch(url.toString());
+            //     const data = await res.json();
+
+            //     if (data.success && data.data) {
+            //         setCampaigns(data.data);
+            //     } else if (Array.isArray(data)) {
+            //         setCampaigns(data);
+            //     }
+            // } catch (err) {
+            //     console.error("Failed to fetch campaigns for exploration:", err);
+            // } finally {
+            //     setIsLoading(false);
+            // }
+            try {
+                // 🎯 ফিক্স: new URL বাদ দিয়ে সরাসরি স্ট্রেইট-ফরওয়ার্ড স্ট্রিং তৈরি করুন
+                let fetchUrl = `/api/campaigns?status=approved`;
+
+                // ক্যাটাগরি ফিল্টার থাকলে সেটা পেছনে জোড়া লাগিয়ে দিন
+                if (categoryFilter) {
+                    fetchUrl += `&category=${encodeURIComponent(categoryFilter)}`;
+                }
+
+                const res = await fetch(fetchUrl);
                 const data = await res.json();
 
                 if (data.success && data.data) {

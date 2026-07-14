@@ -17,10 +17,22 @@ export default function SupporterContributionsPage() {
             if (!session?.user?.id && !session?.user?._id) return;
 
             const supporterId = session.user.id || session.user._id;
+            // try {
+            //     const res = await fetch(
+            //         `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/contributions?supporterId=${supporterId}`
+            //     );
+            //     const data = await res.json();
+            //     if (data.success) {
+            //         setContributions(data.data);
+            //     }
+            // } catch (err) {
+            //     console.error("Failed to fetch contribution history:", err);
+            // } finally {
+            //     setIsLoading(false);
+            // }
             try {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/contributions?supporterId=${supporterId}`
-                );
+                const res = await fetch(`/api/contributions?supporterId=${supporterId}`);
+
                 const data = await res.json();
                 if (data.success) {
                     setContributions(data.data);

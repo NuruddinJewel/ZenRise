@@ -27,11 +27,12 @@ export default function CreatorWithdrawalForm({ availableBalance, onSuccess, onC
         setLoading(true);
 
         try {
-            const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+            // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-            const res = await fetch(`${backendUrl}/api/withdrawals`, {
+            // const res = await fetch(`${backendUrl}/api/withdrawals`, {
+            const res = await fetch(`/api/withdrawals`, {
                 method: "POST",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     amount: Number(amount),

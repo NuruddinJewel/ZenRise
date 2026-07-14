@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Wallet, Check, X, Loader2 } from "lucide-react";
 
 export default function AdminWithdrawalRequestsPage() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
     const [withdrawals, setWithdrawals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,8 +13,9 @@ export default function AdminWithdrawalRequestsPage() {
 
     async function fetchPendingWithdrawals() {
         try {
-            const res = await fetch(`${backendUrl}/api/withdrawals?status=pending`, {
-                credentials: "include",
+            // const res = await fetch(`${backendUrl}/api/withdrawals?status=pending`, {
+            const res = await fetch(`/api/withdrawals?status=pending`, {
+                // credentials: "include",
             });
             const data = await res.json();
 
@@ -36,9 +37,9 @@ export default function AdminWithdrawalRequestsPage() {
     async function handleStatusUpdate(id, status) {
         setActionLoadingId(id);
         try {
-            const res = await fetch(`${backendUrl}/api/withdrawals/${id}/status`, {
+            const res = await fetch(`/api/withdrawals/${id}/status`, {
                 method: "PATCH",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status }),
             });

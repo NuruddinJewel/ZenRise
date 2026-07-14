@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Flag } from "lucide-react";
 
 export default function ReportIssuePage() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     const [form, setForm] = useState({ subject: "", description: "" });
     const [loading, setLoading] = useState(false);
 
@@ -24,9 +24,9 @@ export default function ReportIssuePage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${backendUrl}/api/reports`, {
+            const res = await fetch(`/api/reports`, {
                 method: "POST",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
             });

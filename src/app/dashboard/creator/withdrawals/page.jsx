@@ -7,7 +7,7 @@ import { authClient } from "@/lib/auth-client";
 
 export default function CreatorWithdrawalsPage() {
     const { data: session, isPending: sessionPending } = authClient.useSession();
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
     const [withdrawals, setWithdrawals] = useState([]);
     const [stats, setStats] = useState({ earned: 0, pending: 0, withdrawn: 0, available: 0 });
@@ -20,13 +20,13 @@ export default function CreatorWithdrawalsPage() {
 
         try {
             const historyRes = await fetch(
-                `${backendUrl}/api/withdrawals?creatorId=${creatorId}`,
-                { credentials: "include" }
+                `/api/withdrawals?creatorId=${creatorId}`,
+                // { credentials: "include" }
             );
             const historyData = await historyRes.json();
 
             const campaignsRes = await fetch(
-                `${backendUrl}/api/campaigns?creatorId=${creatorId}&status=approved`
+                `/api/campaigns?creatorId=${creatorId}&status=approved`
             );
             const campaigns = await campaignsRes.json();
 

@@ -5,15 +5,15 @@ import { toast } from "react-toastify";
 import { Flag, Check, X, Loader2 } from "lucide-react";
 
 export default function AdminReportsPage() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    // const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
     const [actionLoadingId, setActionLoadingId] = useState(null);
 
     async function fetchReports() {
         try {
-            const res = await fetch(`${backendUrl}/api/reports?status=pending`, {
-                credentials: "include",
+            const res = await fetch(`/api/reports?status=pending`, {
+                // credentials: "include",
             });
             const data = await res.json();
             if (data.success) setReports(data.data);
@@ -32,9 +32,9 @@ export default function AdminReportsPage() {
     async function handleStatusUpdate(id, status) {
         setActionLoadingId(id);
         try {
-            const res = await fetch(`${backendUrl}/api/reports/${id}/status`, {
+            const res = await fetch(`/api/reports/${id}/status`, {
                 method: "PATCH",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status }),
             });
