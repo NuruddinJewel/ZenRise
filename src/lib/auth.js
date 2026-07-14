@@ -42,13 +42,9 @@ export const auth = betterAuth({
         crossSubDomainCookies: {
             enabled: false,
         },
-        // defaultCookieAttributes: {
-        //     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        //     secure: process.env.NODE_ENV === "production",
-        // },
         defaultCookieAttributes: {
-            sameSite: "none",
-            secure: true,
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production",
         },
     },
 });
