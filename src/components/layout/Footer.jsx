@@ -1,20 +1,24 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { FaHeart, FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { authClient } from "@/lib/auth-client";
 
 const FOOTER_LINKS = {
     Platform: [
         { href: "/explore", label: "Explore Campaigns" },
-        { href: "/register", label: "Start a Campaign" },
-        { href: "/how-it-works", label: "How It Works" },
+        { href: "#", label: "How It Works" },
     ],
     Company: [
-        { href: "/about", label: "About Us" },
-        { href: "/contact", label: "Contact" },
-        { href: "/faq", label: "FAQ" },
+        { href: "#", label: "About Us" },
+        { href: "#", label: "Contact" },
+        { href: "#", label: "FAQ" },
     ],
     Legal: [
-        { href: "/terms", label: "Terms of Service" },
-        { href: "/privacy", label: "Privacy Policy" },
+        { href: "#", label: "Terms of Service" },
+        { href: "#", label: "Privacy Policy" },
     ],
 };
 
@@ -27,6 +31,27 @@ const SOCIALS = [
 
 export default function Footer() {
     const year = new Date().getFullYear();
+    const router = useRouter();
+    const { data: session, isPending } = authClient.useSession();
+
+    function handleStartCampaignClick(e) {
+        e.preventDefault();
+
+        if (isPending) return;
+
+        if (!session) {
+            toast.info("Please sign up or log in as a creator to start a campaign.");
+            router.push("/register");
+            return;
+        }
+
+        if (session.user.role !== "creator") {
+            toast.error("Only creator accounts can start a campaign.");
+            return;
+        }
+
+        router.push("/dashboard/creator/add-campaign");
+    }
 
     return (
         <footer className="border-t border-base-300 bg-base-200 text-base-content">
@@ -41,7 +66,6 @@ export default function Footer() {
                             Empowering creators and supporters to fund ideas, causes, and
                             products that matter.
                         </p>
-                        {/* Social Icons */}
                         <div className="mt-5 flex gap-3">
                             {SOCIALS.map(({ href, icon: Icon, label }) => (
                                 <a
@@ -66,7 +90,7 @@ export default function Footer() {
                             </h3>
                             <ul className="mt-4 flex flex-col gap-3">
                                 {links.map((link) => (
-                                    <li key={link.href}>
+                                    <li key={link.label}>
                                         <Link
                                             href={link.href}
                                             className="text-sm text-base-content/70 transition-colors hover:text-primary"
@@ -75,6 +99,18 @@ export default function Footer() {
                                         </Link>
                                     </li>
                                 ))}
+
+                                {/* Start a Campaign  */}
+                                {section === "Platform" && (
+                                    <li>
+                                        <button
+                                            onClick={handleStartCampaignClick}
+                                            className="text-sm text-base-content/70 transition-colors hover:text-primary text-left"
+                                        >
+                                            Start a Campaign
+                                        </button>
+                                    </li>
+                                )}
                             </ul>
                         </div>
                     ))}
