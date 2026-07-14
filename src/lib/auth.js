@@ -14,6 +14,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
+    trustedOrigins: ["https://zen-rise-two.vercel.app"],
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID,
