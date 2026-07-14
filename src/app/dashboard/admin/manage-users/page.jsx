@@ -15,7 +15,7 @@ export default function ManageUsersPage() {
     async function fetchUsers() {
         try {
             // const res = await fetch(`${backendUrl}/api/users`, { credentials: "include" });
-            const res = await fetch(`/api/users`, { credentials: "include" });
+            const res = await fetch(`/api/users`);
             const data = await res.json();
             if (data.success) setUsers(data.data);
         } catch (err) {
@@ -35,7 +35,7 @@ export default function ManageUsersPage() {
         try {
             const res = await fetch(`/api/users/${id}/role`, {
                 method: "PATCH",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ role: newRole }),
             });

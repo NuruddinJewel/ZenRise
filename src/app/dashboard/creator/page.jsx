@@ -32,7 +32,7 @@ export default function CreatorDashboardHome() {
             try {
                 const res = await fetch(
                     `/api/campaigns?creatorId=${session.user.id}`,
-                    { credentials: "include" }
+                    // { credentials: "include" }
                 );
                 const data = await res.json();
                 setCampaigns(data);

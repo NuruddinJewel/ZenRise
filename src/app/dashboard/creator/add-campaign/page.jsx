@@ -60,7 +60,7 @@ export default function AddCampaignPage() {
             // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/campaigns`, {
             const res = await fetch(`/api/campaigns`, {
                 method: "POST",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
             });

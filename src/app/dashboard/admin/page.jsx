@@ -14,7 +14,7 @@ export default function AdminDashboardHome() {
             try {
                 const [usersRes, campaignsRes, withdrawalsRes, reportsRes] = await Promise.all([
                     // fetch(`${backendUrl}/api/users`, { credentials: "include" }),
-                    fetch(`/api/users`, { credentials: "include" }),
+                    fetch(`/api/users`),
                     fetch(`/api/campaigns?status=pending`),
                     fetch(`/api/withdrawals?status=pending`,),
                     fetch(`/api/reports?status=pending`,),

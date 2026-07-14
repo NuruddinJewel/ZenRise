@@ -32,7 +32,7 @@ export default function CreatorWithdrawalForm({ availableBalance, onSuccess, onC
             // const res = await fetch(`${backendUrl}/api/withdrawals`, {
             const res = await fetch(`/api/withdrawals`, {
                 method: "POST",
-                credentials: "include",
+                // credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     amount: Number(amount),
