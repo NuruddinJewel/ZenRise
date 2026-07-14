@@ -15,7 +15,7 @@ export default function ManageCampaignsPage() {
             const res = await fetch(
                 // `${process.env.NEXT_PUBLIC_API_URL}/api/campaigns?status=pending`,
                 `/api/campaigns?status=pending`,
-                // { credentials: "include" }
+                { credentials: "include" }
 
             );
             const data = await res.json();
@@ -40,7 +40,7 @@ export default function ManageCampaignsPage() {
                 `/api/campaigns/${id}/status`,
                 {
                     method: "PATCH",
-                    // credentials: "include",
+                    credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ status }),
                 }
