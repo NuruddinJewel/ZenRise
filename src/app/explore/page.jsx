@@ -1,20 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Compass, Coins, ArrowRight, Loader2 } from "lucide-react";
+import { Search, Compass, Coins, ArrowRight, Loader2, X } from "lucide-react";
 
-export default function ExploreCampaignsPage() {
+function ExploreContent() {
+    const searchParams = useSearchParams();
+    const categoryFilter = searchParams.get("category");
+
     const [campaigns, setCampaigns] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchCampaigns() {
+        async function fetchCategories() {
             try {
-                // Fetching approved campaigns from the API
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/campaigns?status=approved`);
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/categories`
+                );
+                const data = await res.json();
+                setCategories(data);
+            } catch (err) {
+                console.error("Failed to fetch categories:", err);
+            }
+        }
+        fetchCategories();
+    }, []);
+
+    useEffect(() => {
+        async function fetchCampaigns() {
+            setIsLoading(true);
+            try {
+                const url = new URL(
+                    `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/campaigns`
+                );
+                url.searchParams.set("status", "approved");
+                if (categoryFilter) url.searchParams.set("category", categoryFilter);
+
+                const res = await fetch(url.toString());
                 const data = await res.json();
 
                 if (data.success && data.data) {
@@ -29,15 +55,19 @@ export default function ExploreCampaignsPage() {
             }
         }
         fetchCampaigns();
-    }, []);
+    }, [categoryFilter]);
 
-    // Robust dynamic search logic matching database fields securely
+    const activeCategoryName =
+        categories.find((c) => c.slug === categoryFilter)?.name || categoryFilter;
+
     const filteredCampaigns = campaigns.filter((campaign) => {
         const title = campaign.title || "";
         const category = campaign.category || "";
         const query = searchQuery.toLowerCase();
 
-        return title.toLowerCase().includes(query) || category.toLowerCase().includes(query);
+        return (
+            title.toLowerCase().includes(query) || category.toLowerCase().includes(query)
+        );
     });
 
     if (isLoading) {
@@ -54,16 +84,17 @@ export default function ExploreCampaignsPage() {
     return (
         <div className="min-h-screen bg-base-100 px-4 py-8 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
-
                 {/* Header / Search */}
-                <div className="mb-10 text-center md:text-left md:flex md:items-center md:justify-between border-b border-base-300 pb-6">
+                <div className="mb-6 text-center md:text-left md:flex md:items-center md:justify-between border-b border-base-300 pb-6">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight text-base-content sm:text-4xl flex items-center justify-center md:justify-start gap-2">
                             <Compass className="text-primary" size={32} />
                             Explore Campaigns
                         </h1>
                         <p className="mt-2 text-sm sm:text-base text-base-content/60">
-                            Discover innovative projects, back passionate creators, and drive real-world impact.
+                            {categoryFilter
+                                ? `Showing campaigns in "${activeCategoryName}"`
+                                : "Discover innovative projects, back passionate creators, and drive real-world impact."}
                         </p>
                     </div>
 
@@ -81,16 +112,50 @@ export default function ExploreCampaignsPage() {
                     </div>
                 </div>
 
+                {/* Category filter chips */}
+                <div className="mb-10 flex flex-wrap items-center gap-2">
+                    <Link
+                        href="/explore"
+                        className={`btn btn-sm rounded-full normal-case ${!categoryFilter ? "btn-primary" : "btn-outline"
+                            }`}
+                    >
+                        All
+                    </Link>
+                    {categories.map((cat) => (
+                        <Link
+                            key={cat._id}
+                            href={`/explore?category=${cat.slug}`}
+                            className={`btn btn-sm rounded-full normal-case ${categoryFilter === cat.slug ? "btn-primary" : "btn-outline"
+                                }`}
+                        >
+                            {cat.name}
+                        </Link>
+                    ))}
+
+                    {categoryFilter && (
+                        <Link
+                            href="/explore"
+                            className="ml-2 flex items-center gap-1 text-sm text-base-content/60 hover:text-primary"
+                        >
+                            <X size={14} />
+                            Clear
+                        </Link>
+                    )}
+                </div>
+
                 {/* Grid */}
                 {filteredCampaigns.length === 0 ? (
                     <div className="flex flex-col items-center justify-center border border-dashed border-base-300 rounded-box p-16 bg-base-200/30 text-center">
-                        <p className="text-lg font-medium text-base-content/80">No active campaigns found</p>
-                        <p className="text-sm text-base-content/50 mt-1">Try refining your search keyword or check back later.</p>
+                        <p className="text-lg font-medium text-base-content/80">
+                            No campaigns found{categoryFilter ? ` in "${activeCategoryName}"` : ""}
+                        </p>
+                        <p className="text-sm text-base-content/50 mt-1">
+                            Try refining your search keyword or check back later.
+                        </p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {filteredCampaigns.map((campaign) => {
-                            // Extract ID dynamically supporting both raw object and plain string standard
                             const campaignId = campaign._id?.$oid || campaign._id;
 
                             const raised = campaign.raisedCredits || 0;
@@ -131,10 +196,11 @@ export default function ExploreCampaignsPage() {
                                             {campaign.description}
                                         </p>
 
-                                        {/* Progress Bar */}
                                         <div className="mt-4 space-y-1.5">
                                             <div className="flex justify-between text-xs font-medium">
-                                                <span className="text-primary font-semibold">{progressPercentage}% Raised</span>
+                                                <span className="text-primary font-semibold">
+                                                    {progressPercentage}% Raised
+                                                </span>
                                                 <span className="text-base-content/50">{goal} Goal</span>
                                             </div>
                                             <div className="w-full bg-base-300 h-2.5 rounded-full overflow-hidden">
@@ -145,7 +211,6 @@ export default function ExploreCampaignsPage() {
                                             </div>
                                         </div>
 
-                                        {/* Stats Row */}
                                         <div className="card-actions justify-between items-center mt-5 pt-3 border-t border-base-300/60">
                                             <div className="flex items-center gap-1 text-sm font-bold text-secondary">
                                                 <Coins size={16} />
@@ -169,5 +234,13 @@ export default function ExploreCampaignsPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function ExploreCampaignsPage() {
+    return (
+        <Suspense fallback={null}>
+            <ExploreContent />
+        </Suspense>
     );
 }
