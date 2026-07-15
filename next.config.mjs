@@ -28,6 +28,14 @@ const nextConfig = {
 
   async rewrites() {
     return [
+      // {
+      //   source: '/api/((?!auth):path*)',
+      //   destination: `${backendUrl}/api/:path*`,
+      // },
+      {
+        source: '/api/auth/:path*',
+        destination: '/api/auth/:path*',
+      },
       {
         source: '/api/:path*',
         destination: `${backendUrl}/api/:path*`,

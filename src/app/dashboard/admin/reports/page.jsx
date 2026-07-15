@@ -13,7 +13,7 @@ export default function AdminReportsPage() {
     async function fetchReports() {
         try {
             const res = await fetch(`/api/reports?status=pending`, {
-                // credentials: "include",
+                credentials: "include",
             });
             const data = await res.json();
             if (data.success) setReports(data.data);
@@ -34,7 +34,7 @@ export default function AdminReportsPage() {
         try {
             const res = await fetch(`/api/reports/${id}/status`, {
                 method: "PATCH",
-                // credentials: "include",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status }),
             });

@@ -15,7 +15,7 @@ export default function AdminWithdrawalRequestsPage() {
         try {
             // const res = await fetch(`${backendUrl}/api/withdrawals?status=pending`, {
             const res = await fetch(`/api/withdrawals?status=pending`, {
-                // credentials: "include",
+                credentials: "include",
             });
             const data = await res.json();
 
@@ -39,7 +39,7 @@ export default function AdminWithdrawalRequestsPage() {
         try {
             const res = await fetch(`/api/withdrawals/${id}/status`, {
                 method: "PATCH",
-                // credentials: "include",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status }),
             });

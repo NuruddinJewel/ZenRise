@@ -21,7 +21,7 @@ export default function CreatorWithdrawalsPage() {
         try {
             const historyRes = await fetch(
                 `/api/withdrawals?creatorId=${creatorId}`,
-                // { credentials: "include" }
+                { credentials: "include" }
             );
             const historyData = await historyRes.json();
 
